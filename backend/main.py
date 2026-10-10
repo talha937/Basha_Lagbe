@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from database import Base, engine
 import models  # noqa: F401  (registers the tables)
-from routers import listings
+from routers import listings, inquiries
 
 # Creates tables if they don't exist. Switch to Alembic before a real launch.
 Base.metadata.create_all(bind=engine)
@@ -19,6 +19,7 @@ app.add_middleware(
 )
 
 app.include_router(listings.router)
+app.include_router(inquiries.router)
 
 
 @app.get("/")

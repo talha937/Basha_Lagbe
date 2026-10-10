@@ -30,3 +30,14 @@ def list_properties(
         query = query.filter(Property.rent <= max_rent)
 
     return query.order_by(Property.created_at.desc()).all()
+
+@router.get("/{property_id}", response_model=PropertyOut)
+def get_property(property_id: int, db: Session = Depends(get_db)):
+    prop = (
+        db.query(Property)
+        .filter(Property.id == property_id, Property.is_available.is_(True))
+        .first()
+    )
+    if not prop:
+        raise HTTPException(status_code=404, detail="Property not found")
+    return prop
