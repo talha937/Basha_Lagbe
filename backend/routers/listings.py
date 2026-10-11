@@ -1,6 +1,5 @@
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -12,7 +11,7 @@ router = APIRouter(prefix="/properties", tags=["properties"])
 
 @router.get("", response_model=list[PropertyOut])
 def list_properties(
-    area: Optional[str] = Query(None, max_length=100),
+    area_id: Optional[int] = Query(None, ge=1),
     min_rent: Optional[int] = Query(None, ge=0),
     max_rent: Optional[int] = Query(None, ge=0),
     db: Session = Depends(get_db),
@@ -22,14 +21,15 @@ def list_properties(
 
     query = db.query(Property).filter(Property.is_available.is_(True))
 
-    if area:
-        query = query.filter(func.lower(Property.area) == area.strip().lower())
+    if area_id is not None:
+        query = query.filter(Property.area_id == area_id)
     if min_rent is not None:
         query = query.filter(Property.rent >= min_rent)
     if max_rent is not None:
         query = query.filter(Property.rent <= max_rent)
 
     return query.order_by(Property.created_at.desc()).all()
+
 
 @router.get("/{property_id}", response_model=PropertyOut)
 def get_property(property_id: int, db: Session = Depends(get_db)):

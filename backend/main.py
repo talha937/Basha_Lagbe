@@ -1,25 +1,29 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
-from database import Base, engine
-import models  # noqa: F401  (registers the tables)
-from routers import listings, inquiries
+from limiter import limiter
+from routers import areas, auth, inquiries, landlord, listings
 
-# Creates tables if they don't exist. Switch to Alembic before a real launch.
-Base.metadata.create_all(bind=engine)
+app = FastAPI(title="Basha Finder API", version="0.2.0")
 
-app = FastAPI(title="Basha Finder API", version="0.1.0")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     allow_credentials=False,
-    allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
+app.include_router(auth.router)
+app.include_router(areas.router)
 app.include_router(listings.router)
 app.include_router(inquiries.router)
+app.include_router(landlord.router)
 
 
 @app.get("/")

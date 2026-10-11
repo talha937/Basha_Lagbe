@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
 from database import get_db
+from limiter import limiter
 from models import Inquiry, Property
 from schemas import InquiryCreate, InquiryOut
 
@@ -9,7 +10,8 @@ router = APIRouter(prefix="/inquiries", tags=["inquiries"])
 
 
 @router.post("", response_model=InquiryOut, status_code=201)
-def create_inquiry(data: InquiryCreate, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def create_inquiry(request: Request, data: InquiryCreate, db: Session = Depends(get_db)):
     prop = (
         db.query(Property)
         .filter(Property.id == data.property_id, Property.is_available.is_(True))
