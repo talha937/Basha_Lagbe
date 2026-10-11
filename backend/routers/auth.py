@@ -33,7 +33,7 @@ def register(request: Request, data: UserCreate, db: Session = Depends(get_db)):
         phone=data.phone,
         email=email,
         password_hash=hash_password(data.password),
-        role="landlord",
+        role=data.role,
     )
     db.add(user)
     try:

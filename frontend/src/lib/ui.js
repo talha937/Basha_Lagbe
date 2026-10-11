@@ -1,0 +1,20 @@
+export const inputClass =
+  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100";
+export const primaryBtn =
+  "rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60";
+export const secondaryBtn =
+  "rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50";
+
+const BN_DIGITS = "০১২৩৪৫৬৭৮৯";
+
+// Mirrors the backend: 01712345678, +8801712345678 and Bangla digits are all accepted
+export function normalizePhone(value) {
+  let s = value
+    .replace(/[০-৯]/g, (d) => String(BN_DIGITS.indexOf(d)))
+    .replace(/[\s\-()]/g, "");
+  if (s.startsWith("+88")) s = s.slice(3);
+  else if (s.startsWith("88") && s.length === 13) s = s.slice(2);
+  return s;
+}
+
+export const isBdMobile = (value) => /^01[3-9]\d{8}$/.test(normalizePhone(value));

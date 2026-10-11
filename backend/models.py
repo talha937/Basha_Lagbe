@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    Boolean, Column, Date, DateTime, ForeignKey, Integer, String, Text, func, text,
+    Boolean, Column, Date, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, func, text,
 )
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
@@ -55,6 +55,14 @@ class Property(Base):
     # status: available | rented | removed
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    # Phase 3: moderation, verification, expiry
+    moderation_status = Column(
+        String(20), nullable=False, default="pending_review", server_default="pending_review", index=True
+    )  # pending_review | approved | rejected
+    moderation_note = Column(String(500), nullable=True)  # the reason shown to the landlord on rejection
+    verification_status = Column(String(20), nullable=False, default="unverified", server_default="unverified")
+    verified_at = Column(DateTime(timezone=True), nullable=True)
+    expires_at = Column(DateTime(timezone=True), nullable=True, index=True)  # set when approved or renewed
 
     area_ref = relationship("Area", lazy="joined")
     images = relationship(
@@ -72,6 +80,10 @@ class Property(Base):
     def image_url(self):
         # the cover photo; keeps the Phase 1 cards working unchanged
         return self.images[0].url if self.images else None
+
+    @property
+    def is_verified(self) -> bool:
+        return self.verification_status == "verified"
 
 
 class PropertyImage(Base):
@@ -93,4 +105,56 @@ class Inquiry(Base):
     name = Column(String(100), nullable=False)
     contact = Column(String(100), nullable=False)
     message = Column(String(1000), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+class ContactRequest(Base):
+    __tablename__ = "contact_requests"
+    __table_args__ = (UniqueConstraint("property_id", "tenant_id", name="uq_contact_property_tenant"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    property_id = Column(Integer, ForeignKey("properties.id"), nullable=False, index=True)
+    tenant_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    landlord_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)  # copied from the property
+    message = Column(String(500), nullable=False)
+    status = Column(String(20), nullable=False, default="pending", server_default="pending", index=True)
+    # status: pending | accepted | rejected
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    responded_at = Column(DateTime(timezone=True), nullable=True)
+
+    property_ref = relationship("Property", lazy="joined")
+    tenant = relationship("User", foreign_keys=[tenant_id], lazy="joined")
+    landlord = relationship("User", foreign_keys=[landlord_id], lazy="joined")
+
+
+class ListingReport(Base):
+    __tablename__ = "listing_reports"
+    __table_args__ = (UniqueConstraint("property_id", "reporter_id", name="uq_report_property_reporter"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    property_id = Column(Integer, ForeignKey("properties.id"), nullable=False, index=True)
+    reporter_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    reason = Column(String(20), nullable=False)
+    details = Column(String(500), nullable=True)
+    status = Column(String(20), nullable=False, default="open", server_default="open", index=True)
+    # status: open | dismissed | action_taken
+    reviewed_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    reviewed_at = Column(DateTime(timezone=True), nullable=True)
+    resolution_note = Column(String(500), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    property_ref = relationship("Property", lazy="joined")
+    reporter = relationship("User", foreign_keys=[reporter_id], lazy="joined")
+
+
+class ListingReview(Base):
+    """Append-only audit trail of every admin decision on a listing."""
+    __tablename__ = "listing_reviews"
+
+    id = Column(Integer, primary_key=True, index=True)
+    property_id = Column(Integer, ForeignKey("properties.id"), nullable=False, index=True)
+    reviewer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    kind = Column(String(20), nullable=False)       # moderation | verification
+    decision = Column(String(20), nullable=False)   # approved | rejected | unpublished | verified | unverified
+    method = Column(String(30), nullable=True)      # phone_call | site_visit | ownership_document
+    note = Column(String(500), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
