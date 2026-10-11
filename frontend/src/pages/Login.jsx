@@ -3,19 +3,18 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import AuthLayout from "../components/AuthLayout";
 import Field from "../components/Field";
 import { useAuth } from "../context/AuthContext";
-import { inputClass, primaryBtn } from "../lib/ui";
+import { homePath, inputClass, primaryBtn } from "../lib/ui";
 
 export default function Login() {
   const { user, loading, login } = useAuth();
   const location = useLocation();
-  const from = location.state?.from || "/dashboard";
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  if (!loading && user) return <Navigate to={from} replace />;
+       if (!loading && user) return <Navigate to={location.state?.from || homePath(user)} replace />;
 
   async function onSubmit(e) {
     e.preventDefault();

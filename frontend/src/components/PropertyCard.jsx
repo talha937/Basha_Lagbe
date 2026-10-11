@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import VerifiedBadge from "./VerifiedBadge";
 import { FACILITY_MAP, TENANT_TYPE_MAP, taka } from "../lib/labels";
 
 export default function PropertyCard({ property, preview = false }) {
-  const { id, title, area, rent, bedrooms, bathrooms, sqft, image_url, tenant_type, facilities = [] } = property;
+  const { id, title, area, rent, bedrooms, bathrooms, sqft, image_url, tenant_type, is_verified, facilities = [] } = property;
   const tenant = TENANT_TYPE_MAP[tenant_type];
   const button = "mt-4 block rounded-lg bg-emerald-50 py-2 text-center text-sm font-semibold text-emerald-700";
 
@@ -19,6 +20,7 @@ export default function PropertyCard({ property, preview = false }) {
             {tenant.bn}
           </span>
         )}
+        {is_verified && <VerifiedBadge className="absolute right-3 top-3" />}
       </div>
 
       <div className="p-4">

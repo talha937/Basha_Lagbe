@@ -8,8 +8,8 @@ import storage
 from database import get_db
 from dependencies import get_owned_property, require_landlord
 from limiter import limiter
-from models import Area, Inquiry, Property, PropertyImage, User
-from schemas import LandlordInquiryOut, LandlordPropertyOut, PropertyBase
+from models import Area, Property, PropertyImage, User
+from schemas import LandlordPropertyOut, PropertyBase
 from visibility import new_expiry
 
 router = APIRouter(prefix="/landlord/properties", tags=["landlord"])
@@ -174,26 +174,3 @@ def delete_property_image(
     db.delete(image)
     db.commit()
     storage.delete_image(path)
-
-
-# Old anonymous-inquiry inbox. Stays until Part B replaces it with contact requests.
-inquiries_router = APIRouter(prefix="/landlord/inquiries", tags=["landlord"])
-
-
-@inquiries_router.get("", response_model=list[LandlordInquiryOut])
-def my_inquiries(user: User = Depends(require_landlord), db: Session = Depends(get_db)):
-    rows = (
-        db.query(Inquiry, Property.title)
-        .join(Property, Inquiry.property_id == Property.id)
-        .filter(Property.owner_id == user.id, Property.status != "removed")
-        .order_by(Inquiry.created_at.desc())
-        .limit(200)
-        .all()
-    )
-    return [
-        LandlordInquiryOut(
-            id=i.id, property_id=i.property_id, property_title=title,
-            name=i.name, contact=i.contact, message=i.message, created_at=i.created_at,
-        )
-        for i, title in rows
-    ]

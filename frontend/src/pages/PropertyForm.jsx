@@ -52,6 +52,7 @@ export default function PropertyForm() {
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(editing);
   const [loadError, setLoadError] = useState("");
+  const [review, setReview] = useState(null);
   const [busy, setBusy] = useState(false);
   const latestFiles = useRef([]);
 
@@ -77,6 +78,7 @@ export default function PropertyForm() {
           available_from: p.available_from || "", facilities: p.facilities, description: p.description,
         });
         setExisting(p.images);
+        setReview({ status: p.moderation_status, note: p.moderation_note });
       })
       .catch((e) => { if (!cancelled) setLoadError(e.status === 404 ? "এই বিজ্ঞাপনটি পাওয়া যায়নি।" : e.message); })
       .finally(() => { if (!cancelled) setLoading(false); });
@@ -187,8 +189,13 @@ export default function PropertyForm() {
     }
 
     newFiles.forEach((f) => URL.revokeObjectURL(f.url));
+    const inReview = saved.moderation_status === "pending_review";
     navigate("/dashboard", {
-      state: { notice: editing ? "পরিবর্তন সেভ হয়েছে ✅" : "বিজ্ঞাপন প্রকাশিত হয়েছে ✅" },
+      state: {
+        notice: inReview
+          ? "বিজ্ঞাপন রিভিউয়ের জন্য জমা হয়েছে ✅ অনুমোদনের পর সবাই দেখতে পাবে।"
+          : "পরিবর্তন সেভ হয়েছে ✅",
+      },
     });
   }
 
@@ -223,6 +230,11 @@ export default function PropertyForm() {
         <span className="ml-2 text-sm font-normal text-slate-400">{editing ? "Edit listing" : "Add property"}</span>
       </h1>
       {notice && <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">{notice}</p>}
+      {review?.status === "rejected" && (
+        <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+          ❌ এই বিজ্ঞাপনটি প্রত্যাখ্যাত হয়েছে: {review.note}. ঠিক করে আবার জমা দিন।
+        </p>
+      )}
 
       <form onSubmit={onSubmit} noValidate className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
@@ -324,11 +336,15 @@ export default function PropertyForm() {
 
           <div className="flex gap-3">
             <button type="submit" disabled={busy} className={primaryBtn}>
-              {busy ? "অপেক্ষা করুন..." : editing ? "পরিবর্তন সেভ করুন" : "বিজ্ঞাপন প্রকাশ করুন"}
+              {busy ? "অপেক্ষা করুন..." : editing ? "পরিবর্তন সেভ করুন" : "বিজ্ঞাপন জমা দিন"}
             </button>
             <Link to="/dashboard" className={secondaryBtn}>বাতিল</Link>
           </div>
-          {!editing && <p className="text-xs text-slate-500">প্রকাশ করলে বিজ্ঞাপনটি সাথে সাথে সবাই দেখতে পাবে।</p>}
+          <p className="text-xs text-slate-500">
+            {editing
+              ? "ভাড়া, এলাকা, ধরন, বেডরুম বা বাথরুম বদলালে বিজ্ঞাপনটি আবার রিভিউতে যাবে এবং যাচাই চিহ্ন সরে যাবে।"
+              : "জমা দেওয়ার পর আমাদের টিম রিভিউ করবে। অনুমোদনের পরই বিজ্ঞাপনটি সবার জন্য দেখা যাবে।"}
+          </p>
         </div>
 
         <aside>

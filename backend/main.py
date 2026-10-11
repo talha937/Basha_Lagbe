@@ -5,7 +5,7 @@ from slowapi.errors import RateLimitExceeded
 
 from limiter import limiter
 from routers import (
-    admin, areas, auth, contact_requests, inquiries, landlord, listings, reports,
+    admin, areas, auth, contact_requests, landlord, listings, reports,
 )
 
 app = FastAPI(title="Basha Finder API", version="0.3.0")
@@ -27,9 +27,7 @@ app.include_router(listings.router)
 app.include_router(contact_requests.router)
 app.include_router(reports.router)
 app.include_router(landlord.router)
-app.include_router(landlord.inquiries_router)
 app.include_router(admin.router)
-app.include_router(inquiries.router)  # retired in Part B
 
 
 @app.get("/")

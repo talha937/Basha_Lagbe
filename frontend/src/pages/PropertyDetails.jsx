@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import ContactBox from "../components/ContactBox";
 import PropertyGallery from "../components/PropertyGallery";
+import ReportBox from "../components/ReportBox";
+import VerifiedBadge from "../components/VerifiedBadge";
 import { FACILITY_MAP, PROPERTY_TYPE_MAP, TENANT_TYPE_MAP, taka } from "../lib/labels";
-import { inputClass, primaryBtn } from "../lib/ui";
-import { createInquiry, getProperty } from "../services/api";
+import { getProperty } from "../services/api";
 
 export default function PropertyDetails() {
   const { id } = useParams();
@@ -11,11 +13,6 @@ export default function PropertyDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [notFound, setNotFound] = useState(false);
-
-  const [form, setForm] = useState({ name: "", contact: "", message: "" });
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -33,37 +30,12 @@ export default function PropertyDetails() {
     return () => { cancelled = true; };
   }, [id]);
 
-  const setField = (key) => (e) => setForm({ ...form, [key]: e.target.value });
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setFormError("");
-    if (form.name.trim().length < 2) return setFormError("আপনার নাম লিখুন।");
-    if (form.contact.trim().length < 5) return setFormError("সঠিক মোবাইল নম্বর বা ইমেইল দিন।");
-    if (form.message.trim().length < 2) return setFormError("একটি ছোট বার্তা লিখুন।");
-
-    setSending(true);
-    try {
-      await createInquiry({
-        property_id: Number(id),
-        name: form.name.trim(),
-        contact: form.contact.trim(),
-        message: form.message.trim(),
-      });
-      setSent(true);
-    } catch (err) {
-      setFormError(err.message);
-    } finally {
-      setSending(false);
-    }
-  }
-
   if (loading) return <main className="py-16 text-center text-slate-500">লোড হচ্ছে...</main>;
 
   if (notFound) {
     return (
       <main className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <p className="text-lg">বিজ্ঞাপনটি পাওয়া যায়নি। হয়তো ভাড়া হয়ে গেছে বা সরিয়ে ফেলা হয়েছে।</p>
+        <p className="text-lg">বিজ্ঞাপনটি পাওয়া যায়নি। হয়তো ভাড়া হয়ে গেছে, মেয়াদ শেষ হয়েছে বা সরিয়ে ফেলা হয়েছে।</p>
         <Link to="/" className="mt-4 inline-block text-emerald-700 underline">সব বিজ্ঞাপন দেখুন</Link>
       </main>
     );
@@ -124,7 +96,8 @@ export default function PropertyDetails() {
         </div>
 
         <aside className="md:col-span-2">
-          <p className="text-3xl font-bold text-emerald-700">
+          {property.is_verified && <VerifiedBadge />}
+          <p className="mt-2 text-3xl font-bold text-emerald-700">
             {taka(property.rent)} <span className="text-base font-normal text-slate-500">/মাস</span>
           </p>
           <h1 className="mt-1 text-xl font-semibold">{property.title}</h1>
@@ -133,22 +106,8 @@ export default function PropertyDetails() {
             {property.bedrooms} Beds · {property.bathrooms} Baths{property.sqft ? ` · ${property.sqft} sqft` : ""}
           </p>
 
-          <div className="mt-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-            <h3 className="mb-3 font-semibold">বাড়িওয়ালার সাথে যোগাযোগ</h3>
-            {sent ? (
-              <p className="text-sm text-emerald-700">✅ আপনার বার্তা পাঠানো হয়েছে। বাড়িওয়ালা আপনার সাথে যোগাযোগ করবেন।</p>
-            ) : (
-              <form onSubmit={handleSubmit} noValidate className="space-y-3">
-                <input className={inputClass} placeholder="আপনার নাম" maxLength={100} value={form.name} onChange={setField("name")} />
-                <input className={inputClass} placeholder="মোবাইল নম্বর বা ইমেইল" maxLength={100} value={form.contact} onChange={setField("contact")} />
-                <textarea className={inputClass} rows="3" placeholder="ছোট একটি বার্তা" maxLength={1000} value={form.message} onChange={setField("message")} />
-                {formError && <p className="text-sm text-red-600">{formError}</p>}
-                <button type="submit" disabled={sending} className={`${primaryBtn} w-full`}>
-                  {sending ? "পাঠানো হচ্ছে..." : "বার্তা পাঠান"}
-                </button>
-              </form>
-            )}
-          </div>
+          <ContactBox propertyId={property.id} />
+          <ReportBox propertyId={property.id} />
         </aside>
       </div>
     </main>

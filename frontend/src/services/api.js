@@ -19,6 +19,7 @@ function parseError(status, body) {
         fields[key] = String(d.msg).replace(/^Value error,\s*/, "");
       }
     }
+    if (fields.body) return { message: fields.body, fields };
     return { message: "ফর্মের তথ্য ঠিক করে আবার চেষ্টা করুন।", fields };
   }
   if (typeof body?.detail === "string") return { message: body.detail, fields: {} };
@@ -74,14 +75,13 @@ export function getProperties(filters = {}) {
 }
 export const getProperty = (id) => request(`/properties/${id}`);
 export const getAreas = () => request("/areas");
-export const createInquiry = (data) => request("/inquiries", { method: "POST", json: data });
 
 // ---------- Auth ----------
 export const register = (data) => request("/auth/register", { method: "POST", json: data });
 export const login = (data) => request("/auth/login", { method: "POST", json: data });
 export const getMe = () => request("/auth/me", { auth: true });
 
-// ---------- Landlord ----------
+// ---------- Landlord properties ----------
 export const getMyProperties = () => request("/landlord/properties", { auth: true });
 export const getMyProperty = (id) => request(`/landlord/properties/${id}`, { auth: true });
 export const createMyProperty = (data) =>
@@ -94,6 +94,8 @@ export const markRented = (id) =>
   request(`/landlord/properties/${id}/mark-rented`, { method: "POST", auth: true });
 export const markAvailable = (id) =>
   request(`/landlord/properties/${id}/mark-available`, { method: "POST", auth: true });
+export const renewProperty = (id) =>
+  request(`/landlord/properties/${id}/renew`, { method: "POST", auth: true });
 export function uploadImages(id, files) {
   const formData = new FormData();
   files.forEach((file) => formData.append("files", file));
@@ -101,4 +103,32 @@ export function uploadImages(id, files) {
 }
 export const deleteImage = (id, imageId) =>
   request(`/landlord/properties/${id}/images/${imageId}`, { method: "DELETE", auth: true });
-export const getMyInquiries = () => request("/landlord/inquiries", { auth: true });
+
+// ---------- Contact requests ----------
+export const createContactRequest = (data) =>
+  request("/contact-requests", { method: "POST", json: data, auth: true });
+export const getMyRequests = () => request("/contact-requests/mine", { auth: true });
+export const getLandlordRequests = (status) =>
+  request(`/landlord/contact-requests${status ? `?status=${status}` : ""}`, { auth: true });
+export const decideRequest = (id, status) =>
+  request(`/landlord/contact-requests/${id}`, { method: "PATCH", json: { status }, auth: true });
+
+// ---------- Reports ----------
+export const reportListing = (id, data) =>
+  request(`/properties/${id}/report`, { method: "POST", json: data, auth: true });
+
+// ---------- Admin ----------
+export const getAdminSummary = () => request("/admin/summary", { auth: true });
+export const getAdminListings = (moderation) =>
+  request(`/admin/listings?moderation=${moderation}`, { auth: true });
+export const approveListing = (id, note) =>
+  request(`/admin/listings/${id}/approve`, { method: "POST", json: note ? { note } : {}, auth: true });
+export const rejectListing = (id, note) =>
+  request(`/admin/listings/${id}/reject`, { method: "POST", json: { note }, auth: true });
+export const verifyListing = (id, method, note) =>
+  request(`/admin/listings/${id}/verify`, { method: "POST", json: { method, note }, auth: true });
+export const unverifyListing = (id, note) =>
+  request(`/admin/listings/${id}/unverify`, { method: "POST", json: { note }, auth: true });
+export const getAdminReports = (status) => request(`/admin/reports?status=${status}`, { auth: true });
+export const resolveReport = (id, body) =>
+  request(`/admin/reports/${id}/resolve`, { method: "POST", json: body, auth: true });

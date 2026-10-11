@@ -18,3 +18,16 @@ export function normalizePhone(value) {
 }
 
 export const isBdMobile = (value) => /^01[3-9]\d{8}$/.test(normalizePhone(value));
+
+// Where each role lands after login
+export const homePath = (user) =>
+  user?.role === "admin" ? "/admin" : user?.role === "landlord" ? "/dashboard" : "/my-requests";
+
+export const fmtDate = (iso) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+export const fmtDateTime = (iso) =>
+  new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+
+// Whole days left until a date (0 or less means expired)
+export const daysUntil = (iso) => Math.ceil((new Date(iso).getTime() - Date.now()) / 86400000);

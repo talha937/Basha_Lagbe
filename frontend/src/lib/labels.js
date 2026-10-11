@@ -32,3 +32,25 @@ export const FACILITY_MAP = toMap(FACILITIES);
 
 // en-IN grouping gives 1,50,000, which is how Bangladesh writes lakhs
 export const taka = (n) => `৳${Number(n || 0).toLocaleString("en-IN")}`;
+
+export const REPORT_REASONS = [
+  { code: "scam", bn: "প্রতারণা / ভুয়া বিজ্ঞাপন" },
+  { code: "wrong_price", bn: "ভাড়া ভুল দেখানো হয়েছে" },
+  { code: "duplicate", bn: "একই বিজ্ঞাপন বারবার দেওয়া হয়েছে" },
+  { code: "unavailable", bn: "বাসা আর খালি নেই" },
+  { code: "wrong_info", bn: "তথ্য বা ছবি ভুল" },
+  { code: "other", bn: "অন্য কারণ" },
+];
+export const REPORT_REASON_MAP = toMap(REPORT_REASONS);
+
+export const VERIFY_METHODS = [
+  { code: "phone_call", bn: "ফোনে কথা বলে" },
+  { code: "site_visit", bn: "সরেজমিনে দেখে" },
+  { code: "ownership_document", bn: "মালিকানার কাগজ দেখে" },
+];
+
+export const REQUEST_STATUS = {
+  pending: { bn: "অপেক্ষায়", cls: "bg-amber-100 text-amber-700" },
+  accepted: { bn: "গৃহীত", cls: "bg-emerald-100 text-emerald-700" },
+  rejected: { bn: "প্রত্যাখ্যাত", cls: "bg-red-100 text-red-700" },
+};

@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import AuthLayout from "../components/AuthLayout";
 import Field from "../components/Field";
 import { useAuth } from "../context/AuthContext";
-import { inputClass, isBdMobile, normalizePhone, primaryBtn } from "../lib/ui";
+import { homePath, inputClass, isBdMobile, normalizePhone, primaryBtn } from "../lib/ui";
+
+const ROLES = [
+  { code: "tenant", bn: "ভাড়াটিয়া", sub: "বাসা খুঁজছি" },
+  { code: "landlord", bn: "বাড়িওয়ালা", sub: "বাসা ভাড়া দেব" },
+];
 
 export default function Register() {
   const { user, loading, register } = useAuth();
+  const location = useLocation();
+  const [role, setRole] = useState("tenant");
   const [form, setForm] = useState({ name: "", phone: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState("");
   const [busy, setBusy] = useState(false);
   const [showPw, setShowPw] = useState(false);
 
-  if (!loading && user) return <Navigate to="/dashboard" replace />;
+  if (!loading && user) return <Navigate to={location.state?.from || homePath(user)} replace />;
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 
@@ -35,8 +42,8 @@ export default function Register() {
         phone: normalizePhone(form.phone),
         email: form.email.trim() || null,
         password: form.password,
+        role,
       });
-      // AuthContext now has the user, so the redirect at the top runs
     } catch (err) {
       setErrors(err.fields || {});
       setFormError(err.message);
@@ -48,10 +55,29 @@ export default function Register() {
   return (
     <AuthLayout
       title="অ্যাকাউন্ট খুলুন"
-      subtitle="বাড়িওয়ালা হিসেবে বিজ্ঞাপন দিতে রেজিস্টার করুন"
-      footer={<>আগে থেকেই অ্যাকাউন্ট আছে? <Link to="/login" className="font-semibold text-emerald-700">লগইন করুন</Link></>}
+      subtitle="ভাড়াটিয়া বা বাড়িওয়ালা হিসেবে রেজিস্টার করুন"
+      footer={<>আগে থেকেই অ্যাকাউন্ট আছে? <Link to="/login" state={location.state} className="font-semibold text-emerald-700">লগইন করুন</Link></>}
     >
       <form onSubmit={onSubmit} noValidate className="space-y-4">
+        <Field bn="আপনি কে?" en="I am a">
+          <div className="grid grid-cols-2 gap-2">
+            {ROLES.map((r) => (
+              <button
+                type="button"
+                key={r.code}
+                aria-pressed={role === r.code}
+                onClick={() => setRole(r.code)}
+                className={`rounded-xl border px-3 py-3 text-left ${
+                  role === r.code ? "border-emerald-600 bg-emerald-50" : "border-slate-300 hover:bg-slate-50"
+                }`}
+              >
+                <span className="block font-semibold">{r.bn}</span>
+                <span className="text-xs text-slate-500">{r.sub}</span>
+              </button>
+            ))}
+          </div>
+        </Field>
+
         <Field id="name" bn="আপনার নাম" en="Name" error={errors.name}>
           <input id="name" className={inputClass} value={form.name} onChange={set("name")} placeholder="যেমন: করিম রহমান" maxLength={100} />
         </Field>
