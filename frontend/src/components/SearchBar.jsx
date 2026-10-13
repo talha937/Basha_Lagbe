@@ -1,5 +1,13 @@
+import { useMemo, useState } from 'react'
+
 export default function SearchBar({ areas, filters, onChange, onSearch, areaError }) {
+  const [areaOpen, setAreaOpen] = useState(false)
   const set = (key) => (e) => onChange({ ...filters, [key]: e.target.value })
+  const visibleAreas = useMemo(() => {
+    const query = filters.areaText.trim().toLowerCase()
+    if (!query) return areas
+    return areas.filter((area) => `${area.name} ${area.thana}`.toLowerCase().includes(query))
+  }, [areas, filters.areaText])
 
   const field = "h-14 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-800 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
 
@@ -9,17 +17,34 @@ export default function SearchBar({ areas, filters, onChange, onSearch, areaErro
         <div className="relative">
           <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-lg text-brand-600">⌖</span>
           <input
-            list="area-options"
             placeholder="Enter area or city"
             value={filters.areaText}
-            onChange={set('areaText')}
+            onFocus={() => setAreaOpen(true)}
+            onChange={(event) => {
+              setAreaOpen(true)
+              onChange({ ...filters, areaText: event.target.value })
+            }}
             className={`${field} pl-11`}
           />
-          <datalist id="area-options">
-            {areas.map((a) => (
-              <option key={a.id} value={a.name} label={`${a.thana} thana`} />
-            ))}
-          </datalist>
+          {areaOpen && visibleAreas.length > 0 && (
+            <div className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-20 max-h-60 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 shadow-xl">
+              {visibleAreas.map((area) => (
+                <button
+                  key={area.id}
+                  type="button"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => {
+                    onChange({ ...filters, areaText: area.name })
+                    setAreaOpen(false)
+                  }}
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm text-slate-700 hover:bg-brand-50"
+                >
+                  <span className="font-semibold">{area.name}</span>
+                  <span className="ml-2 text-xs text-slate-400">{area.thana}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         <div className="relative">
           <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-lg text-brand-600">৳</span>
