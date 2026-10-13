@@ -29,7 +29,7 @@ export default function MyRequests() {
         <div className="mt-6 rounded-2xl bg-white p-10 text-center ring-1 ring-slate-200">
           <p className="font-semibold">এখনো কোনো অনুরোধ পাঠাননি</p>
           <p className="mt-1 text-sm text-slate-500">পছন্দের বাসা খুঁজে বাড়িওয়ালাকে অনুরোধ পাঠান।</p>
-          <Link to="/" className="mt-4 inline-block rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700">বিজ্ঞাপন দেখুন</Link>
+          <Link to="/" className="mt-4 inline-block rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">বিজ্ঞাপন দেখুন</Link>
         </div>
       )}
 
@@ -42,11 +42,11 @@ export default function MyRequests() {
                 {r.listing.image_url ? (
                   <img src={r.listing.image_url} alt="" className="h-20 w-28 shrink-0 rounded-lg object-cover" />
                 ) : (
-                  <div className="flex h-20 w-28 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-2xl">🏠</div>
+                  <div className="flex h-20 w-28 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-2xl">🏠</div>
                 )}
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <Link to={`/properties/${r.listing.id}`} className="font-semibold hover:text-emerald-700">{r.listing.title}</Link>
+                    <Link to={`/properties/${r.listing.id}`} className="font-semibold hover:text-brand-700">{r.listing.title}</Link>
                     <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${s.cls}`}>{s.bn}</span>
                   </div>
                   <p className="text-sm text-slate-500">📍 {r.listing.area} · {taka(r.listing.rent)}/মাস</p>
@@ -57,9 +57,9 @@ export default function MyRequests() {
               <p className="mt-3 whitespace-pre-wrap rounded-lg bg-slate-50 p-3 text-sm text-slate-600">{r.message}</p>
 
               {r.status === "accepted" && r.landlord_phone && (
-                <div className="mt-3 rounded-xl bg-emerald-50 p-3">
-                  <p className="text-sm text-emerald-800">✅ {r.landlord_name} আপনার অনুরোধ গ্রহণ করেছেন</p>
-                  <a href={`tel:${r.landlord_phone}`} className="text-lg font-bold text-emerald-700">📞 {r.landlord_phone}</a>
+                <div className="mt-3 rounded-xl bg-brand-50 p-3">
+                  <p className="text-sm text-brand-800">✅ {r.landlord_name} আপনার অনুরোধ গ্রহণ করেছেন</p>
+                  <a href={`tel:${r.landlord_phone}`} className="text-lg font-bold text-brand-700">📞 {r.landlord_phone}</a>
                   <p className="mt-1 text-xs text-slate-600">⚠️ বাসা নিজে দেখে নেওয়ার আগে কোনো টাকা পাঠাবেন না।</p>
                 </div>
               )}

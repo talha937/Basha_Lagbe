@@ -54,7 +54,7 @@ export default function Requests() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
-      <Link to="/dashboard" className="text-sm text-emerald-700">← ড্যাশবোর্ডে ফিরুন</Link>
+      <Link to="/dashboard" className="text-sm text-brand-700">← ড্যাশবোর্ডে ফিরুন</Link>
       <h1 className="mt-2 text-2xl font-bold">ভাড়াটিয়ার অনুরোধ <span className="text-sm font-normal text-slate-400">Requests</span></h1>
 
       <div className="mt-5 inline-flex flex-wrap rounded-xl border border-slate-200 bg-white p-1">
@@ -62,7 +62,7 @@ export default function Requests() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${tab === t.key ? "bg-emerald-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${tab === t.key ? "bg-brand-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
           >
             {t.bn}
             <span className={`rounded-full px-2 text-xs ${tab === t.key ? "bg-white/20" : "bg-slate-100"}`}>{count(t.key)}</span>
@@ -91,12 +91,12 @@ export default function Requests() {
               <p className="mt-3 text-sm text-slate-500">{r.tenant_name} · {fmtDateTime(r.created_at)}</p>
 
               {r.status === "accepted" && r.tenant_phone && (
-                <a href={`tel:${r.tenant_phone}`} className="mt-2 inline-block text-lg font-bold text-emerald-700">📞 {r.tenant_phone}</a>
+                <a href={`tel:${r.tenant_phone}`} className="mt-2 inline-block text-lg font-bold text-brand-700">📞 {r.tenant_phone}</a>
               )}
 
               {r.status === "pending" && (
                 <div className="mt-4 flex gap-2">
-                  <button disabled={busy} onClick={() => decide(r, "accepted")} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">গ্রহণ করুন</button>
+                  <button disabled={busy} onClick={() => decide(r, "accepted")} className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">গ্রহণ করুন</button>
                   <button disabled={busy} onClick={() => decide(r, "rejected")} className="rounded-lg border border-bd-red px-4 py-2 text-sm font-semibold text-bd-red hover:bg-bd-red/5">প্রত্যাখ্যান</button>
                 </div>
               )}

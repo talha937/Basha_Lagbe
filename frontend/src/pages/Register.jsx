@@ -56,7 +56,7 @@ export default function Register() {
     <AuthLayout
       title="অ্যাকাউন্ট খুলুন"
       subtitle="ভাড়াটিয়া বা বাড়িওয়ালা হিসেবে রেজিস্টার করুন"
-      footer={<>আগে থেকেই অ্যাকাউন্ট আছে? <Link to="/login" state={location.state} className="font-semibold text-emerald-700">লগইন করুন</Link></>}
+      footer={<>আগে থেকেই অ্যাকাউন্ট আছে? <Link to="/login" state={location.state} className="font-semibold text-brand-700">লগইন করুন</Link></>}
     >
       <form onSubmit={onSubmit} noValidate className="space-y-4">
         <Field bn="আপনি কে?" en="I am a">
@@ -68,7 +68,7 @@ export default function Register() {
                 aria-pressed={role === r.code}
                 onClick={() => setRole(r.code)}
                 className={`rounded-xl border px-3 py-3 text-left ${
-                  role === r.code ? "border-emerald-600 bg-emerald-50" : "border-slate-300 hover:bg-slate-50"
+                  role === r.code ? "border-brand-600 bg-brand-50" : "border-slate-300 hover:bg-slate-50"
                 }`}
               >
                 <span className="block font-semibold">{r.bn}</span>

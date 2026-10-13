@@ -51,6 +51,6 @@ export const VERIFY_METHODS = [
 
 export const REQUEST_STATUS = {
   pending: { bn: "অপেক্ষায়", cls: "bg-amber-100 text-amber-700" },
-  accepted: { bn: "গৃহীত", cls: "bg-emerald-100 text-emerald-700" },
+  accepted: { bn: "গৃহীত", cls: "bg-brand-100 text-brand-700" },
   rejected: { bn: "প্রত্যাখ্যাত", cls: "bg-red-100 text-red-700" },
 };

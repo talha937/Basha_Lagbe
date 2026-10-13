@@ -12,7 +12,7 @@ function Thumb({ src, cover, isNew, onRemove }) {
       >
         ✕
       </button>
-      {cover && <span className="absolute bottom-1.5 left-1.5 rounded bg-emerald-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">কভার</span>}
+      {cover && <span className="absolute bottom-1.5 left-1.5 rounded bg-brand-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">কভার</span>}
       {isNew && <span className="absolute bottom-1.5 right-1.5 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">নতুন</span>}
     </div>
   );
@@ -35,7 +35,7 @@ export default function PhotoUploader({ existing, newFiles, max, error, onAdd, o
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="flex aspect-square flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+            className="flex aspect-square flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-brand-300 text-brand-700 hover:bg-brand-50"
           >
             <span className="text-2xl leading-none">＋</span>
             <span className="text-xs">ছবি যোগ করুন</span>

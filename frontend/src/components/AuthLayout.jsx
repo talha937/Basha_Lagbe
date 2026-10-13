@@ -10,13 +10,16 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
         </div>
       </div>
 
-      <aside className="relative hidden overflow-hidden rounded-3xl bg-gradient-to-br from-bd-green to-slate-900 p-10 text-white lg:flex lg:flex-col lg:justify-end">
-        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-bd-red/80" />
-        <div className="absolute -left-10 top-1/3 h-40 w-40 rounded-full bg-white/10" />
-        <p className="relative mb-6 text-3xl font-bold leading-snug">
+      <aside
+        className="relative hidden min-h-[720px] overflow-hidden rounded-3xl bg-cover bg-center p-10 text-white lg:flex lg:flex-col lg:justify-end"
+        style={{ backgroundImage: "url('/login-city.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-[#082744]/95 via-[#0d2a47]/60 to-[#0d2a47]/20" />
+        <div className="absolute inset-0 bg-brand-900/20" />
+        <p className="relative mb-6 text-3xl font-bold leading-snug drop-shadow-md">
           ব্রোকার ছাড়া,<br />সরাসরি ভাড়াটিয়া।
         </p>
-        <div className="relative rounded-2xl bg-white p-6 text-slate-800 shadow-xl">
+        <div className="relative rounded-2xl bg-white/95 p-6 text-slate-800 shadow-xl backdrop-blur-sm">
           <p className="mb-3 font-semibold">বাড়িওয়ালাদের জন্য</p>
           <ul className="space-y-2 text-sm text-slate-600">
             <li>✔ ছবি, ভাড়া ও সুবিধাসহ বিজ্ঞাপন দিন</li>

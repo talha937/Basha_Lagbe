@@ -34,7 +34,7 @@ export default function Login() {
     <AuthLayout
       title="লগইন"
       subtitle="আপনার বিজ্ঞাপনগুলো ম্যানেজ করুন"
-      footer={<>নতুন? <Link to="/register" className="font-semibold text-emerald-700">রেজিস্টার করুন</Link></>}
+      footer={<>নতুন? <Link to="/register" className="font-semibold text-brand-700">রেজিস্টার করুন</Link></>}
     >
       <form onSubmit={onSubmit} noValidate className="space-y-4">
         <Field id="identifier" bn="মোবাইল নম্বর বা ইমেইল" en="Mobile or email">

@@ -33,7 +33,7 @@ function Section({ title, sub, children }) {
 
 const chip = (active) =>
   `rounded-full border px-3 py-1.5 text-sm ${
-    active ? "border-emerald-600 bg-emerald-50 font-semibold text-emerald-700" : "border-slate-300 text-slate-600 hover:bg-slate-50"
+    active ? "border-brand-600 bg-brand-50 font-semibold text-brand-700" : "border-slate-300 text-slate-600 hover:bg-slate-50"
   }`;
 
 export default function PropertyForm() {
@@ -204,7 +204,7 @@ export default function PropertyForm() {
     return (
       <main className="py-20 text-center">
         <p className="text-red-700">{loadError}</p>
-        <Link to="/dashboard" className="mt-3 inline-block text-emerald-700 underline">ড্যাশবোর্ডে ফিরুন</Link>
+        <Link to="/dashboard" className="mt-3 inline-block text-brand-700 underline">ড্যাশবোর্ডে ফিরুন</Link>
       </main>
     );
   }
@@ -224,7 +224,7 @@ export default function PropertyForm() {
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
-      <Link to="/dashboard" className="text-sm text-emerald-700">← ড্যাশবোর্ডে ফিরুন</Link>
+      <Link to="/dashboard" className="text-sm text-brand-700">← ড্যাশবোর্ডে ফিরুন</Link>
       <h1 className="mt-2 text-2xl font-bold">
         {editing ? "বিজ্ঞাপন এডিট করুন" : "নতুন বাসা যোগ করুন"}
         <span className="ml-2 text-sm font-normal text-slate-400">{editing ? "Edit listing" : "Add property"}</span>
@@ -351,7 +351,7 @@ export default function PropertyForm() {
           <div className="lg:sticky lg:top-24">
             <p className="mb-2 text-sm font-semibold text-slate-600">প্রিভিউ <span className="font-normal text-slate-400">Preview</span></p>
             <PropertyCard property={preview} preview />
-            <p className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
+            <p className="mt-3 rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-xs text-brand-800">
               প্রকাশ হলে বিজ্ঞাপনটি এভাবেই দেখা যাবে।
             </p>
           </div>

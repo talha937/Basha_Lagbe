@@ -106,7 +106,7 @@ export default function ContactBox({ propertyId }) {
     return (
       <Shell>
         <p className="text-sm text-slate-600">এটি আপনার নিজের বিজ্ঞাপন।</p>
-        <Link to={`/dashboard/properties/${propertyId}/edit`} className="mt-2 inline-block text-sm font-semibold text-emerald-700 underline">এডিট করুন</Link>
+        <Link to={`/dashboard/properties/${propertyId}/edit`} className="mt-2 inline-block text-sm font-semibold text-brand-700 underline">এডিট করুন</Link>
       </Shell>
     );
   }
@@ -124,10 +124,10 @@ export default function ContactBox({ propertyId }) {
   if (r?.status === "accepted") {
     return (
       <Shell>
-        <div className="rounded-xl bg-emerald-50 p-4">
-          <p className="text-sm font-semibold text-emerald-800">✅ বাড়িওয়ালা আপনার অনুরোধ গ্রহণ করেছেন</p>
+        <div className="rounded-xl bg-brand-50 p-4">
+          <p className="text-sm font-semibold text-brand-800">✅ বাড়িওয়ালা আপনার অনুরোধ গ্রহণ করেছেন</p>
           <p className="mt-2 text-sm text-slate-700">{r.landlord_name}</p>
-          <a href={`tel:${r.landlord_phone}`} className="text-xl font-bold text-emerald-700">📞 {r.landlord_phone}</a>
+          <a href={`tel:${r.landlord_phone}`} className="text-xl font-bold text-brand-700">📞 {r.landlord_phone}</a>
         </div>
         <p className="mt-3 text-xs text-slate-600">⚠️ বাসা নিজে দেখে নেওয়ার আগে কোনো টাকা পাঠাবেন না।</p>
       </Shell>
@@ -137,7 +137,7 @@ export default function ContactBox({ propertyId }) {
     return (
       <Shell>
         <p className="text-sm text-slate-700">বাড়িওয়ালা এই অনুরোধটি গ্রহণ করেননি।</p>
-        <Link to="/#listings" className="mt-2 inline-block text-sm font-semibold text-emerald-700 underline">অন্য বিজ্ঞাপন দেখুন</Link>
+        <Link to="/#listings" className="mt-2 inline-block text-sm font-semibold text-brand-700 underline">অন্য বিজ্ঞাপন দেখুন</Link>
       </Shell>
     );
   }

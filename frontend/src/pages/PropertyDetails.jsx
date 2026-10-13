@@ -36,7 +36,7 @@ export default function PropertyDetails() {
     return (
       <main className="mx-auto max-w-3xl px-4 py-16 text-center">
         <p className="text-lg">বিজ্ঞাপনটি পাওয়া যায়নি। হয়তো ভাড়া হয়ে গেছে, মেয়াদ শেষ হয়েছে বা সরিয়ে ফেলা হয়েছে।</p>
-        <Link to="/" className="mt-4 inline-block text-emerald-700 underline">সব বিজ্ঞাপন দেখুন</Link>
+        <Link to="/" className="mt-4 inline-block text-brand-700 underline">সব বিজ্ঞাপন দেখুন</Link>
       </main>
     );
   }
@@ -45,7 +45,7 @@ export default function PropertyDetails() {
     return (
       <main className="mx-auto max-w-3xl px-4 py-16 text-center text-red-700">
         <p>{error}</p>
-        <Link to="/" className="mt-4 inline-block text-emerald-700 underline">হোমে ফিরুন</Link>
+        <Link to="/" className="mt-4 inline-block text-brand-700 underline">হোমে ফিরুন</Link>
       </main>
     );
   }
@@ -63,7 +63,7 @@ export default function PropertyDetails() {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
-      <Link to="/" className="text-sm text-emerald-700">← সব বিজ্ঞাপন</Link>
+      <Link to="/" className="text-sm text-brand-700">← সব বিজ্ঞাপন</Link>
 
       <div className="mt-4 grid gap-8 md:grid-cols-5">
         <div className="md:col-span-3">
@@ -86,7 +86,7 @@ export default function PropertyDetails() {
             <div className="mt-5 flex flex-wrap gap-2">
               {property.facilities.map((code) =>
                 FACILITY_MAP[code] ? (
-                  <span key={code} className="rounded-full bg-emerald-50 px-3 py-1 text-sm text-emerald-700">
+                  <span key={code} className="rounded-full bg-brand-50 px-3 py-1 text-sm text-brand-700">
                     {FACILITY_MAP[code].icon} {FACILITY_MAP[code].bn}
                   </span>
                 ) : null
@@ -97,7 +97,7 @@ export default function PropertyDetails() {
 
         <aside className="md:col-span-2">
           {property.is_verified && <VerifiedBadge />}
-          <p className="mt-2 text-3xl font-bold text-emerald-700">
+          <p className="mt-2 text-3xl font-bold text-brand-700">
             {taka(property.rent)} <span className="text-base font-normal text-slate-500">/মাস</span>
           </p>
           <h1 className="mt-1 text-xl font-semibold">{property.title}</h1>

@@ -71,7 +71,7 @@ function ListingCard({ p, onChanged }) {
 
       <p className="mt-2 text-sm text-slate-600">
         বাড়িওয়ালা: <strong>{p.owner_name || "—"}</strong>
-        {p.owner_phone && <> · <a href={`tel:${p.owner_phone}`} className="font-semibold text-emerald-700">{p.owner_phone}</a></>}
+        {p.owner_phone && <> · <a href={`tel:${p.owner_phone}`} className="font-semibold text-brand-700">{p.owner_phone}</a></>}
       </p>
       <p className="mt-1 text-sm text-slate-600">
         {p.bedrooms} Beds · {p.bathrooms} Baths{p.sqft ? ` · ${p.sqft} sqft` : ""}
@@ -105,13 +105,13 @@ function ListingCard({ p, onChanged }) {
 
       <div className="mt-4 flex flex-wrap gap-2">
         {(status === "pending_review" || status === "rejected") && (
-          <button onClick={() => toggle("approve")} className={`${btn} border-emerald-600 text-emerald-700 hover:bg-emerald-50`}>✔ অনুমোদন</button>
+          <button onClick={() => toggle("approve")} className={`${btn} border-brand-600 text-brand-700 hover:bg-brand-50`}>✔ অনুমোদন</button>
         )}
         {status !== "rejected" && (
           <button onClick={() => toggle("reject")} className={`${btn} border-bd-red text-bd-red hover:bg-bd-red/5`}>✖ প্রত্যাখ্যান</button>
         )}
         {status === "approved" && !p.is_verified && (
-          <button onClick={() => toggle("verify")} className={`${btn} border-emerald-600 text-emerald-700 hover:bg-emerald-50`}>🛡 যাচাই করুন</button>
+          <button onClick={() => toggle("verify")} className={`${btn} border-brand-600 text-brand-700 hover:bg-brand-50`}>🛡 যাচাই করুন</button>
         )}
         {status === "approved" && p.is_verified && (
           <button onClick={() => toggle("unverify")} className={`${btn} border-slate-300 text-slate-600 hover:bg-slate-50`}>যাচাই সরান</button>
@@ -167,7 +167,7 @@ function ReportCard({ r, onChanged }) {
         <div>
           <p className="font-semibold">{REPORT_REASON_MAP[r.reason]?.bn || r.reason}</p>
           <p className="text-sm text-slate-500">
-            বিজ্ঞাপন: <Link to={`/properties/${r.property_id}`} className="text-emerald-700 underline">{r.property_title}</Link>
+            বিজ্ঞাপন: <Link to={`/properties/${r.property_id}`} className="text-brand-700 underline">{r.property_title}</Link>
             {" "}({r.property_moderation_status})
           </p>
         </div>
@@ -272,7 +272,7 @@ export default function Admin() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${tab === t.key ? "bg-emerald-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${tab === t.key ? "bg-brand-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
           >
             {t.bn}
             {t.n > 0 && <span className={`rounded-full px-2 text-xs ${tab === t.key ? "bg-white/20" : "bg-bd-red text-white"}`}>{t.n}</span>}

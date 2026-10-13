@@ -17,7 +17,7 @@ function NotFound() {
   return (
     <main className="py-20 text-center">
       <p className="text-lg">পেজটি পাওয়া যায়নি।</p>
-      <Link to="/" className="mt-3 inline-block text-emerald-700 underline">হোমে ফিরুন</Link>
+      <Link to="/" className="mt-3 inline-block text-brand-700 underline">হোমে ফিরুন</Link>
     </main>
   );
 }

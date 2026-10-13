@@ -5,7 +5,8 @@ from pwdlib import PasswordHash
 
 import settings
 
-_hasher = PasswordHash.recommended()  # Argon2
+from pwdlib.hashers.bcrypt import BcryptHasher
+_hasher = PasswordHash((BcryptHasher(),))
 _DUMMY_HASH = _hasher.hash("not-a-real-password")
 
 

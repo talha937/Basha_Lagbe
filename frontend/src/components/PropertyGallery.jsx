@@ -4,7 +4,7 @@ export default function PropertyGallery({ images = [], title }) {
   const [active, setActive] = useState(0);
 
   if (images.length === 0) {
-    return <div className="flex h-72 items-center justify-center rounded-2xl bg-emerald-50 text-6xl">🏠</div>;
+    return <div className="flex h-72 items-center justify-center rounded-2xl bg-brand-50 text-6xl">🏠</div>;
   }
   const current = images[Math.min(active, images.length - 1)];
 
@@ -23,7 +23,7 @@ export default function PropertyGallery({ images = [], title }) {
               key={img.id}
               type="button"
               onClick={() => setActive(i)}
-              className={`shrink-0 overflow-hidden rounded-lg ring-2 ${i === active ? "ring-emerald-600" : "ring-transparent"}`}
+              className={`shrink-0 overflow-hidden rounded-lg ring-2 ${i === active ? "ring-brand-600" : "ring-transparent"}`}
             >
               <img src={img.url} alt="" className="h-16 w-24 object-cover" />
             </button>

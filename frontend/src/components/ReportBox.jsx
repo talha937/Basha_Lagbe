@@ -18,14 +18,14 @@ export default function ReportBox({ propertyId }) {
   if (user?.role === "admin") return null;
 
   if (done) {
-    return <p className="mt-4 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">{done}</p>;
+    return <p className="mt-4 rounded-lg bg-brand-50 px-3 py-2 text-sm text-brand-800">{done}</p>;
   }
 
   if (!user) {
     return (
       <p className="mt-4 text-center text-xs text-slate-500">
         সমস্যা আছে?{" "}
-        <Link to="/login" state={{ from: location.pathname }} className="text-emerald-700 underline">লগইন করে রিপোর্ট করুন</Link>
+        <Link to="/login" state={{ from: location.pathname }} className="text-brand-700 underline">লগইন করে রিপোর্ট করুন</Link>
       </p>
     );
   }
