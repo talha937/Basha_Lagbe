@@ -30,6 +30,7 @@ export default function Navbar() {
 
           {user?.role === "tenant" && (
             <>
+              <Link to="/profile" className={link}>প্রোফাইল</Link>
               <Link to="/my-requests" className={link}>আমার অনুরোধ</Link>
               <button onClick={handleLogout} className={link}>লগআউট</button>
             </>
@@ -37,6 +38,7 @@ export default function Navbar() {
 
           {user?.role === "landlord" && (
             <>
+              <Link to="/profile" className={link}>প্রোফাইল</Link>
               <Link to="/dashboard" className={link}>ড্যাশবোর্ড</Link>
               <Link to="/dashboard/requests" className={`hidden sm:inline ${link}`}>অনুরোধ</Link>
               <Link to="/my-requests" className={`hidden lg:inline ${link}`}>আমার পাঠানো</Link>

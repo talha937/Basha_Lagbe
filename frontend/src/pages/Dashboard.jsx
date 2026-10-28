@@ -150,6 +150,7 @@ export default function Dashboard() {
                 <p className="mt-1 text-lg font-bold text-brand-700">{taka(p.rent)} <span className="text-sm font-normal text-slate-500">/মাস</span></p>
 
                 {p.is_verified && <p className="mt-1 text-xs font-semibold text-brand-700">✔ যাচাইকৃত</p>}
+                {p.is_confirmed && <p className="mt-1 inline-block rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">✓ নির্বাচিত / নিশ্চিত</p>}
                 {p.images.length === 0 && <p className="mt-1 text-xs text-amber-700">ছবি নেই। ছবি যোগ করলে বেশি অনুরোধ আসে।</p>}
 
                 {s === "pending" && (

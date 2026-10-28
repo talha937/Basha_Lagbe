@@ -23,11 +23,6 @@ def _token_response(user: User) -> TokenOut:
 def register(request: Request, data: UserCreate, db: Session = Depends(get_db)):
     email = data.email.lower() if data.email else None
 
-    if db.query(User).filter(User.phone == data.phone).first():
-        raise HTTPException(status_code=409, detail="This mobile number is already registered")
-    if email and db.query(User).filter(User.email == email).first():
-        raise HTTPException(status_code=409, detail="This email is already registered")
-
     user = User(
         name=data.name,
         phone=data.phone,
@@ -40,7 +35,7 @@ def register(request: Request, data: UserCreate, db: Session = Depends(get_db)):
         db.commit()
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=409, detail="This mobile number or email is already registered")
+        raise HTTPException(status_code=409, detail="Unable to create this account")
     db.refresh(user)
     return _token_response(user)
 
@@ -51,10 +46,12 @@ def login(request: Request, data: LoginIn, db: Session = Depends(get_db)):
     identifier = data.identifier.strip()
     user = None
     if "@" in identifier:
-        user = db.query(User).filter(User.email == identifier.lower()).first()
+        user = db.query(User).filter(User.email == identifier.lower(), User.role == data.role).first()
     else:
         try:
-            user = db.query(User).filter(User.phone == normalize_phone(identifier)).first()
+            user = db.query(User).filter(
+                User.phone == normalize_phone(identifier), User.role == data.role
+            ).first()
         except ValueError:
             user = None
 

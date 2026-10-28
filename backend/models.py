@@ -12,8 +12,8 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
-    phone = Column(String(15), nullable=False, unique=True, index=True)  # normalized 01XXXXXXXXX
-    email = Column(String(255), nullable=True, unique=True, index=True)
+    phone = Column(String(15), nullable=False, index=True)  # normalized 01XXXXXXXXX; reusable across roles
+    email = Column(String(255), nullable=True, index=True)  # reusable across roles
     password_hash = Column(String(255), nullable=False)
     role = Column(String(20), nullable=False, default="landlord", server_default="landlord")
     is_active = Column(Boolean, nullable=False, default=True, server_default=text("true"))
@@ -84,6 +84,10 @@ class Property(Base):
     @property
     def is_verified(self) -> bool:
         return self.verification_status == "verified"
+
+    @property
+    def is_confirmed(self) -> bool:
+        return self.status == "rented"
 
 
 class PropertyImage(Base):

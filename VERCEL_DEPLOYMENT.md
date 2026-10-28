@@ -9,6 +9,10 @@ api/index.py
 It loads the FastAPI app from `backend/main.py` and keeps the backend's existing
 local imports working.
 
+The frontend is built from `frontend/` by the root `vercel.json` configuration.
+Set the Vercel project root to the repository root; do not set it to `frontend/`
+or `backend/`.
+
 ## Required Vercel environment variable
 
 In the Vercel project settings, add this variable for Preview and Production:

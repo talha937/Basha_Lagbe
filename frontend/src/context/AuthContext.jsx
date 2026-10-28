@@ -28,8 +28,8 @@ export function AuthProvider({ children }) {
     return () => window.removeEventListener("auth:expired", onExpired);
   }, []);
 
-  const login = useCallback(async (identifier, password) => {
-    const data = await api.login({ identifier, password });
+  const login = useCallback(async (identifier, password, role) => {
+    const data = await api.login({ identifier, password, role });
     api.tokenStore.set(data.access_token);
     setUser(data.user);
   }, []);

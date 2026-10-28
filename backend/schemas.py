@@ -6,7 +6,10 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, mo
 
 PropertyType = Literal["flat", "room", "sublet", "studio", "mess"]
 TenantType = Literal["any", "family", "bachelor_male", "bachelor_female"]
-Facility = Literal["lift", "generator", "gas", "parking", "security", "cctv", "wifi", "balcony", "rooftop"]
+Facility = Literal[
+    "lift", "generator", "gas", "parking", "security", "cctv", "wifi", "balcony",
+    "rooftop", "kitchen", "living_room", "drawing_room", "garage", "electricity_bill",
+]
 
 _BD_MOBILE = re.compile(r"^01[3-9]\d{8}$")
 _BN_DIGITS = str.maketrans("০১২৩৪৫৬৭৮৯", "0123456789")
@@ -55,6 +58,7 @@ class LoginIn(BaseModel):
 
     identifier: str = Field(min_length=3, max_length=255)  # mobile or email
     password: str = Field(min_length=1, max_length=128)
+    role: Literal["tenant", "landlord"] = "tenant"
 
 
 class UserOut(BaseModel):
@@ -115,6 +119,7 @@ class PropertyOut(BaseModel):
     image_url: Optional[str] = None
     images: list[ImageOut] = []
     is_verified: bool = False
+    is_confirmed: bool = False
     created_at: datetime
 
 
