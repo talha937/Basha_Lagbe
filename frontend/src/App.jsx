@@ -10,6 +10,7 @@ import PropertyDetails from "./pages/PropertyDetails";
 import PropertyForm from "./pages/PropertyForm";
 import Register from "./pages/Register";
 import Requests from "./pages/Requests";
+import Profile from "./pages/Profile";
 
 const guard = (element, roles) => <ProtectedRoute roles={roles}>{element}</ProtectedRoute>;
 
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
 
         <Route path="/my-requests" element={guard(<MyRequests />, ["tenant", "landlord"])} />
+        <Route path="/profile" element={guard(<Profile />, ["tenant", "landlord"])} />
 
         <Route path="/dashboard" element={guard(<Dashboard />, ["landlord"])} />
         <Route path="/dashboard/new" element={guard(<PropertyForm />, ["landlord"])} />

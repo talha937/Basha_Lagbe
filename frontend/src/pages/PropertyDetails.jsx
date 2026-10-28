@@ -4,6 +4,7 @@ import ContactBox from "../components/ContactBox";
 import PropertyGallery from "../components/PropertyGallery";
 import ReportBox from "../components/ReportBox";
 import VerifiedBadge from "../components/VerifiedBadge";
+import PropertyMap from "../components/PropertyMap";
 import { FACILITY_MAP, PROPERTY_TYPE_MAP, TENANT_TYPE_MAP, taka } from "../lib/labels";
 import { getProperty } from "../services/api";
 
@@ -91,6 +92,7 @@ export default function PropertyDetails() {
                   </span>
                 ) : null
               )}
+              <PropertyMap area={property.area} />
             </div>
           )}
         </div>

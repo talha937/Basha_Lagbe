@@ -23,6 +23,11 @@ export const FACILITIES = [
   { code: "wifi", bn: "ওয়াইফাই", en: "Wi-Fi", icon: "📶" },
   { code: "balcony", bn: "বারান্দা", en: "Balcony", icon: "🌿" },
   { code: "rooftop", bn: "ছাদ", en: "Rooftop", icon: "🏙️" },
+  { code: "kitchen", bn: "রান্নাঘর", en: "Kitchen", icon: "🍳" },
+  { code: "living_room", bn: "লিভিং রুম", en: "Living room", icon: "🛋️" },
+  { code: "drawing_room", bn: "ড্রয়িং রুম", en: "Drawing room", icon: "🪑" },
+  { code: "garage", bn: "গ্যারেজ", en: "Garage", icon: "🚗" },
+  { code: "electricity_bill", bn: "বিদ্যুৎ বিল", en: "Electricity bill", icon: "💡" },
 ];
 
 const toMap = (list) => Object.fromEntries(list.map((x) => [x.code, x]));

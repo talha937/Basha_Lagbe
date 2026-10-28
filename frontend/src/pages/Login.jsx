@@ -10,6 +10,7 @@ export default function Login() {
   const location = useLocation();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("tenant");
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -22,7 +23,7 @@ export default function Login() {
     if (!identifier.trim() || !password) return setError("মোবাইল নম্বর/ইমেইল এবং পাসওয়ার্ড দিন");
     setBusy(true);
     try {
-      await login(identifier.trim(), password);
+      await login(identifier.trim(), password, role);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -39,6 +40,16 @@ export default function Login() {
       <form onSubmit={onSubmit} noValidate className="space-y-4">
         <Field id="identifier" bn="মোবাইল নম্বর বা ইমেইল" en="Mobile or email">
           <input id="identifier" className={inputClass} value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="01712345678" autoComplete="username" maxLength={255} />
+        </Field>
+
+        <Field bn="অ্যাকাউন্টের ধরন" en="Account type">
+          <div className="grid grid-cols-2 gap-2">
+            {[["tenant", "ভাড়াটিয়া"], ["landlord", "বাড়িওয়ালা"]].map(([value, label]) => (
+              <button type="button" key={value} onClick={() => setRole(value)} className={`rounded-lg border px-3 py-2 text-sm ${role === value ? "border-brand-600 bg-brand-50 font-semibold text-brand-700" : "border-slate-300"}`}>
+                {label}
+              </button>
+            ))}
+          </div>
         </Field>
 
         <Field id="password" bn="পাসওয়ার্ড" en="Password">
